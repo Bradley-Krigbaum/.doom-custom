@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-;;(setq user-full-name "bradley.krigbaum"
-;;     user-mail-address "bradley.krigbaum@gmail.com")
+(setq user-full-name "John Doe"
+      user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -25,18 +25,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;;(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
 
-(require 'doom-themes)
-
-(setq doom-themes-enable-bold t
-      doom-themes-enable-italic t)
-
-(load-theme 'doom-dracula t)
-
-(doom-themes-neotree-config)
-
-;; tu use `org' and don't want your org files in the default location below,
+;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
@@ -61,69 +52,3 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-
-;; projectile
-(use-package projectile
-  :diminish
-  :bind (("C-c k" . #'projectile-kill-buffers)
-         ("C-c M" . #'projectile-compile-project))
-  :custom (projectile-completion-system 'ivy)
-  :config (projectile-mode))
-
-;; flycheck
-(use-package flycheck
-  :after org
-  :hook
-  (org-src-mode . disable-flycheck-for-elisp)
-  :custom
-  (flycheck-option-emacs-lisp-package-initialize t)
-  (flycheck-display-errors)
-  :config
-  (global-flycheck-mode)
-  (flycheck-set-indication-mode 'left-margin)
-
-  (defun disable-flycheck-for-elisp ()
-    (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-
-  (add-to-list 'flycheck-checkers 'proselint))
-
-(use-package flycheck-inline
-  :config (global-flycheck-inline-mode))
-
-;; vterm
-(use-package vterm
-  :config
-  (defun turn-off-chrome ()
-    (hl-line-mode -1)
-    (display-line-numbers-mode -1))
-  :hook (vterm-mode . turn-off-chrome))
-
-(use-package vterm-toggle
-  :custom
-  (vterm-toggle-fullscreen-p nil)
-  (vterm-toggle-scope 'projectile)
-  :bind (("C-c t" . #'vterm-toggle)
-         :map vterm-mode-map
-         ("s-t" . #'vterm)
-         ))
-
-;; yasnippets
-(use-package yasnippet
-  :defer 3
-  :diminish yas-minor-mode
-  :config (yas-global-mode)
-  :custom (yas-prompt-functions '(yas-completing-prompt)))
-
-;; visuals
-(when (window-system)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
-
-(ignore-errors (set-frame-font "Fira Code"))
-
-(use-package all-the-icons)
-(use-package all-the-icons-dired
-  :after all-the-icons
-  :hook (dired-mode . all-the-icons-dired-mode))
